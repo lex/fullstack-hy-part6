@@ -1,12 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
+import anecdotes from '../services/anecdotes';
 
 class AnecdoteForm extends React.Component {
-    handleSubmit = e => {
+    handleSubmit = async e => {
+        e.persist();
         e.preventDefault();
+
         const content = e.target.anecdote.value;
-        this.props.createAnecdote(content);
+
+        const anecdote = await anecdotes.add(content);
+
+        this.props.createAnecdote(anecdote);
         this.props.showNotification(`you added '${content}'`);
 
         e.target.anecdote.value = '';

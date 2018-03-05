@@ -2,8 +2,6 @@ const ANECDOTE_CREATE = 'ANECDOTE_CREATE';
 const ANECDOTE_VOTE = 'ANECDOTE_VOTE';
 const ANECDOTE_INIT = 'ANECDOTE_INIT';
 
-const getId = () => (100000 * Math.random()).toFixed(0);
-
 const reducer = (store = [], action) => {
     if (action.type === ANECDOTE_VOTE) {
         const old = store.filter(a => a.id !== action.data.id);
@@ -15,7 +13,11 @@ const reducer = (store = [], action) => {
     if (action.type === ANECDOTE_CREATE) {
         return [
             ...store,
-            { content: action.data.content, id: getId(), votes: 0 },
+            {
+                content: action.data.content,
+                id: action.data.id,
+                votes: action.data.votes,
+            },
         ];
     }
 
@@ -30,7 +32,9 @@ export const createAnecdote = content => {
     return {
         type: ANECDOTE_CREATE,
         data: {
-            content,
+            id: content.id,
+            content: content.content,
+            votes: content.votes,
         },
     };
 };
