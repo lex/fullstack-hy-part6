@@ -1,26 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Filter from './Filter';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 
 class AnecdoteList extends React.Component {
     vote = anecdote => {
-        this.props.store.dispatch(voteAnecdote(anecdote));
+        this.props.voteAnecdote(anecdote);
         this.props.showNotification(`you voted for '${anecdote.content}'`);
     };
 
     render() {
-        const anecdotes = this.props.store.getState().anecdotes;
+        const anecdotes = this.props.anecdotes;
 
         const a = () => {
             return anecdotes
                 .filter(a =>
                     a.content
                         .toLowerCase()
-                        .includes(
-                            this.props.store
-                                .getState()
-                                .filter.filter.toLowerCase(),
-                        ),
+                        .includes(this.props.filter.filter.toLowerCase()),
                 )
                 .sort((a, b) => b.votes - a.votes)
                 .map(anecdote => (
@@ -41,7 +38,7 @@ class AnecdoteList extends React.Component {
             <div>
                 <h2>Anecdotes</h2>
 
-                <Filter store={this.props.store} />
+                <Filter />
 
                 {a()}
             </div>
@@ -49,4 +46,11 @@ class AnecdoteList extends React.Component {
     }
 }
 
-export default AnecdoteList;
+const mapStateToProps = state => {
+    return {
+        anecdotes: state.anecdotes,
+        filter: state.filter,
+    };
+};
+
+export default connect(mapStateToProps, { voteAnecdote })(AnecdoteList);

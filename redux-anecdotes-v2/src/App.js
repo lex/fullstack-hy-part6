@@ -21,19 +21,12 @@ class App extends React.Component {
     };
 
     render() {
-        const anecdotes = this.props.store.getState();
         return (
             <div>
                 <h1>Programming anecdotes</h1>
-                <Notification store={this.props.store} />
-                <AnecdoteList
-                    store={this.props.store}
-                    showNotification={this.showNotification}
-                />
-                <AnecdoteForm
-                    store={this.props.store}
-                    showNotification={this.showNotification}
-                />
+                <Notification />
+                <AnecdoteList showNotification={this.showNotification} />
+                <AnecdoteForm showNotification={this.showNotification} />
             </div>
         );
     }
