@@ -2,9 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Filter from './Filter';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
+import anecdotes from '../services/anecdotes';
 
 class AnecdoteList extends React.Component {
-    vote = anecdote => {
+    vote = async anecdote => {
+        const r = await anecdotes.update({
+            ...anecdote,
+            votes: anecdote.votes + 1,
+        });
+
         this.props.voteAnecdote(anecdote);
         this.props.showNotification(`you voted for '${anecdote.content}'`);
     };
