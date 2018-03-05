@@ -8,6 +8,10 @@ class Notification extends React.Component {
             borderWidth: 1,
         };
 
+        if (!this.props.store.getState().notification.message) {
+            return null;
+        }
+
         return (
             <div style={style}>
                 {this.props.store.getState().notification.message}

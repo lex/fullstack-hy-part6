@@ -6,6 +6,7 @@ class AnecdoteForm extends React.Component {
         e.preventDefault();
         const content = e.target.anecdote.value;
         this.props.store.dispatch(createAnecdote(content));
+        this.props.showNotification(`you added '${content}'`);
 
         e.target.anecdote.value = '';
     };

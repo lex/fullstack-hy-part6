@@ -1,5 +1,5 @@
-const ANECDOTE_CREATE = 'CREATE';
-const ANECDOTE_VOTE = 'VOTE';
+const ANECDOTE_CREATE = 'ANECDOTE_CREATE';
+const ANECDOTE_VOTE = 'ANECDOTE_VOTE';
 
 const anecdotesAtStart = [
     'If it hurts, do it more often',
@@ -29,6 +29,7 @@ const reducer = (store = initialState, action) => {
 
         return [...old, { ...voted, votes: voted.votes + 1 }];
     }
+
     if (action.type === ANECDOTE_CREATE) {
         return [...store, { content: action.content, id: getId(), votes: 0 }];
     }
