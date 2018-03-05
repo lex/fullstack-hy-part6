@@ -1,4 +1,5 @@
 import React from 'react';
+import Filter from './Filter';
 import { voteAnecdote } from '../reducers/anecdoteReducer';
 
 class AnecdoteList extends React.Component {
@@ -10,10 +11,19 @@ class AnecdoteList extends React.Component {
     render() {
         const anecdotes = this.props.store.getState().anecdotes;
 
-        return (
-            <div>
-                <h2>Anecdotes</h2>
-                {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote => (
+        const a = () => {
+            return anecdotes
+                .filter(a =>
+                    a.content
+                        .toLowerCase()
+                        .includes(
+                            this.props.store
+                                .getState()
+                                .filter.filter.toLowerCase(),
+                        ),
+                )
+                .sort((a, b) => b.votes - a.votes)
+                .map(anecdote => (
                     <div key={anecdote.id}>
                         <div>{anecdote.content}</div>
 
@@ -24,7 +34,16 @@ class AnecdoteList extends React.Component {
                             </button>
                         </div>
                     </div>
-                ))}
+                ));
+        };
+
+        return (
+            <div>
+                <h2>Anecdotes</h2>
+
+                <Filter store={this.props.store} />
+
+                {a()}
             </div>
         );
     }
