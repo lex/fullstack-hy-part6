@@ -10,46 +10,37 @@ class AnecdoteList extends React.Component {
     };
 
     render() {
-        const anecdotes = this.props.anecdotes;
-
-        const a = () => {
-            return anecdotes
-                .filter(a =>
-                    a.content
-                        .toLowerCase()
-                        .includes(this.props.filter.filter.toLowerCase()),
-                )
-                .sort((a, b) => b.votes - a.votes)
-                .map(anecdote => (
-                    <div key={anecdote.id}>
-                        <div>{anecdote.content}</div>
-
-                        <div>
-                            has {anecdote.votes}
-                            <button onClick={() => this.vote(anecdote)}>
-                                vote
-                            </button>
-                        </div>
-                    </div>
-                ));
-        };
-
         return (
             <div>
                 <h2>Anecdotes</h2>
 
                 <Filter />
 
-                {a()}
+                {this.props.anecdotes.map(a => (
+                    <div key={a.id}>
+                        <div>{a.content}</div>
+
+                        <div>
+                            has {a.votes}
+                            <button onClick={() => this.vote(a)}>vote</button>
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     }
 }
 
+const anecdotesToShow = (anecdotes, filter) =>
+    anecdotes
+        .filter(a =>
+            a.content.toLowerCase().includes(filter.filter.toLowerCase()),
+        )
+        .sort((a, b) => b.votes - a.votes);
+
 const mapStateToProps = state => {
     return {
-        anecdotes: state.anecdotes,
-        filter: state.filter,
+        anecdotes: anecdotesToShow(state.anecdotes, state.filter),
     };
 };
 
