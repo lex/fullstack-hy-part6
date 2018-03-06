@@ -9,9 +9,20 @@ const Menu = () => (
   </div>
 );
 
+const notificationStyle = {
+  borderRadius: '5px',
+  border: '2px solid #73AD21',
+  padding: '2px',
+  margin: '5px',
+};
+
+const notificationTextStyle = {
+  color: '#73AD21',
+};
+
 const Notification = ({ text }) => (
-  <div>
-    <p>{text}</p>
+  <div style={notificationStyle}>
+    <p style={notificationTextStyle}>{text}</p>
   </div>
 );
 
