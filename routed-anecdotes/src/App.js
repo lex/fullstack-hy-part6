@@ -5,6 +5,7 @@ import {
   Link,
   NavLink,
 } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const menuStyle = {
   backgroundColor: 'lightblue',
@@ -61,13 +62,13 @@ const Anecdote = ({ anecdote }) => (
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
-    <ul>
+    <ListGroup>
       {anecdotes.map(anecdote => (
-        <li key={anecdote.id}>
+        <ListGroupItem>
           <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
+        </ListGroupItem>
       ))}
-    </ul>
+    </ListGroup>
   </div>
 );
 
@@ -227,47 +228,45 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Router>
-          <div>
-            <h1>Software anecdotes</h1>
-            <Menu />
+      <Router>
+        <div className="container">
+          <h1>Software anecdotes</h1>
+          <Menu />
 
-            {this.state.notification && (
-              <Notification text={this.state.notification} />
+          {this.state.notification && (
+            <Notification text={this.state.notification} />
+          )}
+
+          <Route
+            exact
+            path="/"
+            render={() => <AnecdoteList anecdotes={this.state.anecdotes} />}
+          />
+
+          <Route
+            exact
+            path="/anecdotes/:id"
+            render={({ match }) => (
+              <Anecdote anecdote={this.anecdoteById(match.params.id)} />
             )}
+          />
 
-            <Route
-              exact
-              path="/"
-              render={() => <AnecdoteList anecdotes={this.state.anecdotes} />}
-            />
+          <Route path="/about" render={() => <About />} />
 
-            <Route
-              exact
-              path="/anecdotes/:id"
-              render={({ match }) => (
-                <Anecdote anecdote={this.anecdoteById(match.params.id)} />
-              )}
-            />
+          <Route
+            path="/create"
+            render={({ history }) => (
+              <CreateNew
+                history={history}
+                showNotification={this.showNotification}
+                addNew={this.addNew}
+              />
+            )}
+          />
 
-            <Route path="/about" render={() => <About />} />
-
-            <Route
-              path="/create"
-              render={({ history }) => (
-                <CreateNew
-                  history={history}
-                  showNotification={this.showNotification}
-                  addNew={this.addNew}
-                />
-              )}
-            />
-
-            <Footer />
-          </div>
-        </Router>
-      </div>
+          <Footer />
+        </div>
+      </Router>
     );
   }
 }
