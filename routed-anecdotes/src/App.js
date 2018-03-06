@@ -9,6 +9,12 @@ const Menu = () => (
   </div>
 );
 
+const Notification = ({ text }) => (
+  <div>
+    <p>{text}</p>
+  </div>
+);
+
 const Anecdote = ({ anecdote }) => (
   <div>
     <h2>{anecdote.content}</h2>
@@ -68,8 +74,8 @@ const Footer = () => (
 );
 
 class CreateNew extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       content: '',
       author: '',
@@ -90,6 +96,11 @@ class CreateNew extends React.Component {
       info: this.state.info,
       votes: 0,
     });
+    this.props.history.push('/');
+    this.props.showNotification(
+      `a new anecdote ${this.state.content} created!`,
+      10,
+    );
   };
 
   render() {
@@ -174,6 +185,13 @@ class App extends React.Component {
     this.setState({ anecdotes });
   };
 
+  showNotification = (text, delay) => {
+    this.setState({ notification: text });
+    setTimeout(() => {
+      this.setState({ notification: '' });
+    }, delay * 1000);
+  };
+
   render() {
     return (
       <div>
@@ -181,6 +199,10 @@ class App extends React.Component {
           <div>
             <h1>Software anecdotes</h1>
             <Menu />
+
+            {this.state.notification && (
+              <Notification text={this.state.notification} />
+            )}
 
             <Route
               exact
@@ -200,7 +222,13 @@ class App extends React.Component {
 
             <Route
               path="/create"
-              render={() => <CreateNew addNew={this.addNew} />}
+              render={({ history }) => (
+                <CreateNew
+                  history={history}
+                  showNotification={this.showNotification}
+                  addNew={this.addNew}
+                />
+              )}
             />
 
             <Footer />
