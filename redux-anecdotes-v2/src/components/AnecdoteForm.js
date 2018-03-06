@@ -8,12 +8,10 @@ class AnecdoteForm extends React.Component {
         e.persist();
         e.preventDefault();
 
-        const content = e.target.anecdote.value;
-
-        const anecdote = await anecdotes.add(content);
+        const anecdote = e.target.anecdote.value;
 
         this.props.createAnecdote(anecdote);
-        this.props.showNotification(`you added '${content}'`);
+        this.props.showNotification(`you added '${anecdote}'`);
 
         e.target.anecdote.value = '';
     };

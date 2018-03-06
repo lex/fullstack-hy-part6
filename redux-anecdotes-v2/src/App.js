@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Notification from './components/Notification';
 import AnecdoteForm from './components/AnecdoteForm';
 import AnecdoteList from './components/AnecdoteList';
@@ -6,8 +7,13 @@ import {
     createNotification,
     destroyNotification,
 } from './reducers/notificationReducer';
+import { initializeAnecdotes } from './reducers/anecdoteReducer';
 
 class App extends React.Component {
+    componentDidMount() {
+        this.props.initializeAnecdotes();
+    }
+
     showNotification = text => {
         const delay = 5000;
         this.props.store.dispatch(createNotification(text));
@@ -32,4 +38,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default connect(null, { initializeAnecdotes })(App);

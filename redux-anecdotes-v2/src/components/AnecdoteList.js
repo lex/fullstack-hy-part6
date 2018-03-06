@@ -6,11 +6,6 @@ import anecdotes from '../services/anecdotes';
 
 class AnecdoteList extends React.Component {
     vote = async anecdote => {
-        const r = await anecdotes.update({
-            ...anecdote,
-            votes: anecdote.votes + 1,
-        });
-
         this.props.voteAnecdote(anecdote);
         this.props.showNotification(`you voted for '${anecdote.content}'`);
     };
