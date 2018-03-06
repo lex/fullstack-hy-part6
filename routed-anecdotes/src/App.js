@@ -5,31 +5,46 @@ import {
   Link,
   NavLink,
 } from 'react-router-dom';
-import { ListGroup, ListGroupItem, Grid, Row, Col } from 'react-bootstrap';
+import {
+  ListGroup,
+  ListGroupItem,
+  Grid,
+  Row,
+  Col,
+  Navbar,
+  Nav,
+  NavItem,
+  Form,
+  FormGroup,
+  ControlLabel,
+  FormControl,
+  Button,
+} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-const menuStyle = {
-  backgroundColor: 'lightblue',
-  padding: '10px',
-  margin: '5px',
-};
-
-const menuLinkStyle = {
-  fontWeight: 'bold',
-  color: 'black',
+const styles = {
+  menuLinkStyle: {
+    color: 'black',
+  },
 };
 
 const Menu = () => (
-  <div style={menuStyle}>
-    <NavLink exact to="/" activeStyle={menuLinkStyle}>
-      anecdotes
-    </NavLink>&nbsp;
-    <NavLink to="/create" activeStyle={menuLinkStyle}>
-      create
-    </NavLink>&nbsp;
-    <NavLink to="/about" activeStyle={menuLinkStyle}>
-      about
-    </NavLink>&nbsp;
-  </div>
+  <Navbar>
+    <Navbar.Header>
+      <Navbar.Brand>Software anecdotes</Navbar.Brand>
+    </Navbar.Header>
+    <Nav>
+      <LinkContainer exact to="/">
+        <NavItem eventKey={1}>anecdotes</NavItem>
+      </LinkContainer>
+      <LinkContainer to="/create">
+        <NavItem eventKey={2}>create</NavItem>
+      </LinkContainer>
+      <LinkContainer to="/about">
+        <NavItem eventKey={3}>about</NavItem>
+      </LinkContainer>
+    </Nav>
+  </Navbar>
 );
 
 const notificationStyle = {
@@ -64,7 +79,7 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ListGroup>
       {anecdotes.map(anecdote => (
-        <ListGroupItem>
+        <ListGroupItem key={anecdote.id}>
           <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
         </ListGroupItem>
       ))}
@@ -96,7 +111,10 @@ const About = () => (
         </p>
       </Col>
       <Col xs={6} md={4}>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/d/dd/AlfredAhoPortrait.jpg" />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/d/dd/AlfredAhoPortrait.jpg"
+          alt="aho"
+        />
       </Col>
     </Row>
   </Grid>
@@ -149,33 +167,58 @@ class CreateNew extends React.Component {
     return (
       <div>
         <h2>create a new anecdote</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            content
-            <input
-              name="content"
-              value={this.state.content}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div>
-            author
-            <input
-              name="author"
-              value={this.state.author}
-              onChange={this.handleChange}
-            />
-          </div>
-          <div>
-            url for more info
-            <input
-              name="info"
-              value={this.state.info}
-              onChange={this.handleChange}
-            />
-          </div>
-          <button>create</button>
-        </form>
+        <Form horizontal onSubmit={this.handleSubmit}>
+          <FormGroup controlId="anecdoteContent">
+            <Col componentClass={ControlLabel} sm={2}>
+              Content
+            </Col>
+            <Col sm={10}>
+              <FormControl
+                type="text"
+                placeholder="An exercise is not designed to have you create a full story."
+                name="content"
+                value={this.state.content}
+                onChange={this.handleChange}
+              />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="anecdoteAuthor">
+            <Col componentClass={ControlLabel} sm={2}>
+              Author
+            </Col>
+            <Col sm={10}>
+              <FormControl
+                type="text"
+                placeholder="Pertti Ojanen"
+                name="author"
+                value={this.state.author}
+                onChange={this.handleChange}
+              />
+            </Col>
+          </FormGroup>
+
+          <FormGroup controlId="anecdoteInfo">
+            <Col componentClass={ControlLabel} sm={2}>
+              URL for more info
+            </Col>
+            <Col sm={10}>
+              <FormControl
+                type="text"
+                placeholder="http://www.wikipedia.org"
+                name="info"
+                value={this.state.info}
+                onChange={this.handleChange}
+              />
+            </Col>
+          </FormGroup>
+
+          <FormGroup>
+            <Col smOffset={2} sm={10}>
+              <Button type="submit">Create</Button>
+            </Col>
+          </FormGroup>
+        </Form>
       </div>
     );
   }
@@ -238,7 +281,6 @@ class App extends React.Component {
     return (
       <Router>
         <div className="container">
-          <h1>Software anecdotes</h1>
           <Menu />
 
           {this.state.notification && (
