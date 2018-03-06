@@ -15,16 +15,18 @@ const reducer = (store = initialState, action) => {
     return store;
 };
 
-export const createNotification = message => {
-    return {
-        type: NOTIFICATION_CREATE,
-        message,
-    };
-};
+export const showNotification = (message, delay) => {
+    return async dispatch => {
+        dispatch({
+            type: NOTIFICATION_CREATE,
+            message,
+        });
 
-export const destroyNotification = () => {
-    return {
-        type: NOTIFICATION_DESTROY,
+        setTimeout(() => {
+            dispatch({
+                type: NOTIFICATION_DESTROY,
+            });
+        }, delay * 1000);
     };
 };
 

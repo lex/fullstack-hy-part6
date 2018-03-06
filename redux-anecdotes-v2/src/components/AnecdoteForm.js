@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createAnecdote } from '../reducers/anecdoteReducer';
+import { showNotification } from '../reducers/notificationReducer';
 import anecdotes from '../services/anecdotes';
 
 class AnecdoteForm extends React.Component {
@@ -11,7 +12,7 @@ class AnecdoteForm extends React.Component {
         const anecdote = e.target.anecdote.value;
 
         this.props.createAnecdote(anecdote);
-        this.props.showNotification(`you added '${anecdote}'`);
+        this.props.showNotification(`you added '${anecdote}'`, 2);
 
         e.target.anecdote.value = '';
     };
@@ -31,4 +32,6 @@ class AnecdoteForm extends React.Component {
     }
 }
 
-export default connect(null, { createAnecdote })(AnecdoteForm);
+export default connect(null, { createAnecdote, showNotification })(
+    AnecdoteForm,
+);
